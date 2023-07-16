@@ -1,1 +1,1 @@
-# desk-player
+# Player based on Tauri
