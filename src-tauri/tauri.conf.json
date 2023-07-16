@@ -23,6 +23,9 @@
                     "*"
                 ]
             },
+            "globalShortcut": {
+                "all": true
+            },
             "protocol": {
                 "all": true,
                 "asset": true,

@@ -1,5 +1,7 @@
 use std::{env, process};
-use tauri::{AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, Wry};
+use tauri::{AppHandle, CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu, Wry};
+
+use crate::utils::show_main_window;
 
 enum TrayMenuItemType {
     ShowMainWindow,
@@ -29,14 +31,6 @@ pub fn build() -> SystemTray {
 
 fn convert_type2string(t: TrayMenuItemType) -> String {
     <TrayMenuItemType as Into<String>>::into(t)
-}
-
-pub fn show_main_window(app: &AppHandle<Wry>) {
-    if let Some(w) = app.get_window("main") {
-        let _ = w.show();
-        let _ = w.unminimize();
-        w.set_focus().unwrap_or_else(|_| println!("Focused error!"));
-    }
 }
 
 pub fn handle_system_tray_event(app: &AppHandle<Wry>, event: SystemTrayEvent) {
