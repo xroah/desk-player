@@ -8,7 +8,7 @@
     },
     "package": {
         "productName": "RPlayer",
-        "version": "0.0.0"
+        "version": "1.0.0"
     },
     "tauri": {
         "systemTray": {
@@ -28,7 +28,8 @@
                 ]
             },
             "dialog": {
-                "all": true
+                "all": false,
+                "open": true
             },
             "shell": {
                 "all": false,
