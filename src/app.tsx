@@ -1,19 +1,41 @@
-import { open } from "@tauri-apps/api/dialog"
-// import { convertFileSrc } from "@tauri-apps/api/tauri"
-import Button from "@mui/material/Button"
+import AppMenu from "./components/menu"
 import GlobalStyles from "./components/global-styles"
+import { useCallback, useEffect } from "react"
+import { invoke } from "@tauri-apps/api"
 
 function App() {
-    const handleOpen = async () => {
-        const ret = await open()
+    const handleKeyDown = useCallback(
+        (ev: KeyboardEvent) => {
+            const key = ev.key.toLowerCase()
 
-        console.log(ret)
-    }
+            if (ev.metaKey) {
+                switch(key) {
+                    case "q":
+                        invoke("exit")
+                        break
+                    case "w":
+                        invoke("hide_window")
+                        break
+                }
+                return 
+            }
+        },
+        []
+    )
+
+    useEffect(
+        () => {
+            document.addEventListener("keydown", handleKeyDown)
+
+            return document.removeEventListener("keydown", handleKeyDown)
+        },
+        [handleKeyDown]
+    )
 
     return (
         <div>
-            <GlobalStyles/>
-            <Button onClick={handleOpen}>打开文件</Button>
+            <GlobalStyles />
+            <AppMenu />
         </div>
     )
 }

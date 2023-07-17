@@ -17,12 +17,6 @@
         },
         "allowlist": {
             "all": false,
-            "fs": {
-                "all": true,
-                "scope": [
-                    "*"
-                ]
-            },
             "globalShortcut": {
                 "all": true
             },
@@ -33,21 +27,12 @@
                     "**"
                 ]
             },
-            "path": {
-                "all": true
-            },
             "dialog": {
-                "all": true
-            },
-            "process": {
                 "all": true
             },
             "shell": {
                 "all": false,
                 "open": true
-            },
-            "window": {
-                "all": true
             }
         },
         "bundle": {
