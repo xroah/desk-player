@@ -14,9 +14,11 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.0",
     "@mui/material": "^5.14.0",
+    "@reduxjs/toolkit": "^1.9.5",
     "@tauri-apps/api": "^1.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.1.1"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
@@ -24,7 +26,11 @@
     "@types/node": "^20.4.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react": "^7.32.2",
     "typescript": "^5.1.6",
     "vite": "^4.4.3"
   }

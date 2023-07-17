@@ -2,6 +2,7 @@ import AppMenu from "./components/menu"
 import GlobalStyles from "./components/global-styles"
 import { useCallback, useEffect } from "react"
 import { invoke } from "@tauri-apps/api"
+import Player from "./components/player"
 
 function App() {
     const handleKeyDown = useCallback(
@@ -9,7 +10,7 @@ function App() {
             const key = ev.key.toLowerCase()
 
             if (ev.metaKey) {
-                switch(key) {
+                switch (key) {
                     case "q":
                         invoke("exit")
                         break
@@ -17,7 +18,7 @@ function App() {
                         invoke("hide_window")
                         break
                 }
-                return 
+                return
             }
         },
         []
@@ -36,6 +37,7 @@ function App() {
         <div>
             <GlobalStyles />
             <AppMenu />
+            <Player />
         </div>
     )
 }

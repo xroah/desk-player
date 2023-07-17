@@ -4,7 +4,7 @@ import {
     useRef,
     useState
 } from "react"
-import MoreVertIcon from "@mui/icons-material/MoreVert"
+import MenuIcon from "@mui/icons-material/Menu"
 import IconButton from "@mui/material/IconButton"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
@@ -19,10 +19,14 @@ import InfoIcon from "@mui/icons-material/InfoOutlined"
 import SettingsIcon from "@mui/icons-material/SettingsOutlined"
 import ExitIcon from "@mui/icons-material/ExitToAppOutlined"
 import { invoke } from "@tauri-apps/api"
+import { open as openDialog } from "@tauri-apps/api/dialog"
+import { useDispatch } from "react-redux"
+import { setSrc } from "../store/player-slice"
 
 export default function AppMenu() {
     const [open, setOpen] = useState(false)
     const [isMac, setIsMac] = useState(false)
+    const dispatch = useDispatch()
     const handleClick = () => setOpen(o => !o)
     const handleClose = () => setOpen(false)
     const btnRef = useRef(null)
@@ -32,6 +36,18 @@ export default function AppMenu() {
     )
     const handleExit = () => {
         invoke("exit")
+    }
+    const handleOpenFile = async () => {
+        handleClose()
+
+        const file = await openDialog({
+            filters: [{
+                name: "mp4 files",
+                extensions: ["mp4"]
+            }]
+        })
+
+        dispatch(setSrc(file))
     }
 
     useEffect(
@@ -46,14 +62,15 @@ export default function AppMenu() {
             <IconButton
                 ref={btnRef}
                 onClick={handleClick}>
-                <MoreVertIcon />
+                <MenuIcon />
             </IconButton>
             <Menu
                 anchorEl={btnRef.current}
                 onClose={handleClose}
-                open={open}>
+                open={open}
+                css={{userSelect: "none"}}>
                 <MenuList sx={{ width: 220 }} dense>
-                    <MenuItem>
+                    <MenuItem onClick={handleOpenFile}>
                         <ListItemIcon>
                             <FileOpenIcon fontSize="small" />
                         </ListItemIcon>
