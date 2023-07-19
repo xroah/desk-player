@@ -31,12 +31,15 @@ fn main() {
             _ => (),
         })
         .invoke_handler(tauri::generate_handler![
-            js_api::exists_path,
             js_api::exit,
             js_api::get_os,
             js_api::hide_window,
             js_api::set_title,
-            js_api::get_filename
+            js_api::fs::exists_path,
+            js_api::fs::get_filename,
+            js_api::fs::is_dir,
+            js_api::fs::is_file,
+            js_api::fs::read_dir
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
