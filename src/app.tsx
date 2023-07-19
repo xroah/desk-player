@@ -36,7 +36,11 @@ function App() {
     return (
         <div>
             <GlobalStyles />
-            <AppMenu />
+            <header css={{
+                backgroundColor: "#eee"
+            }}>
+                <AppMenu />
+            </header>
             <Player />
         </div>
     )

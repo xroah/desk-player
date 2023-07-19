@@ -46,8 +46,15 @@ export default function AppMenu() {
                 extensions: ["mp4"]
             }]
         })
+        
+        if (!file) {
+            return
+        }
 
         dispatch(setSrc(file))
+        invoke("get_filename", {pathname: file}).then(n => {
+            invoke("set_title", { title: n })
+        })
     }
 
     useEffect(
@@ -68,7 +75,7 @@ export default function AppMenu() {
                 anchorEl={btnRef.current}
                 onClose={handleClose}
                 open={open}
-                css={{userSelect: "none"}}>
+                css={{ userSelect: "none" }}>
                 <MenuList sx={{ width: 220 }} dense>
                     <MenuItem onClick={handleOpenFile}>
                         <ListItemIcon>

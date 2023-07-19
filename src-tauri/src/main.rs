@@ -34,7 +34,9 @@ fn main() {
             js_api::exists_path,
             js_api::exit,
             js_api::get_os,
-            js_api::hide_window
+            js_api::hide_window,
+            js_api::set_title,
+            js_api::get_filename
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
