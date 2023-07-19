@@ -9,8 +9,10 @@ export default function Player() {
 
     useEffect(
         () => {
-            vRef.current?.load()
-            vRef.current?.play()
+            if (src) {
+                vRef.current?.load()
+                vRef.current?.play()
+            }
         },
         [src]
     )
@@ -21,9 +23,18 @@ export default function Player() {
 
 
     return (
-        <video
-            ref={vRef}
-            src={convertFileSrc(src)}
-            controls />
+        <div css={{
+            height: 0,
+            flexGrow: 1,
+            backgroundColor: "#000"
+        }}>
+            <video
+                css={{
+                    width: "100%",
+                    height: "100%"
+                }}
+                ref={vRef}
+                src={convertFileSrc(src)} />
+        </div>
     )
 }

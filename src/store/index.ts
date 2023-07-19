@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
-import playerSlice from "./player-slice"
+import playerSlice from "./player"
+import aboutDialogSlice from "./about-dialog"
 
 export const store = configureStore({
     reducer: {
-        player: playerSlice
+        player: playerSlice,
+        aboutDialog: aboutDialogSlice
     }
 })
 

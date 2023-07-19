@@ -3,6 +3,8 @@ import GlobalStyles from "./components/global-styles"
 import { useCallback, useEffect } from "react"
 import { invoke } from "@tauri-apps/api"
 import Player from "./components/player"
+import AboutDialog from "./components/about-dialog"
+import Playlist from "./components/playlist"
 
 function App() {
     const handleKeyDown = useCallback(
@@ -34,14 +36,25 @@ function App() {
     )
 
     return (
-        <div>
+        <div css={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh",
+            overflow: "hidden"
+        }}>
             <GlobalStyles />
             <header css={{
-                backgroundColor: "#eee"
+                display: "flex",
+                justifyContent: "space-between",
+                flexShrink: 0,
+                padding: 3,
+                backgroundColor: "#eee",
             }}>
                 <AppMenu />
+                <Playlist />
             </header>
             <Player />
+            <AboutDialog />
         </div>
     )
 }

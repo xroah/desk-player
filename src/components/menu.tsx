@@ -19,42 +19,47 @@ import InfoIcon from "@mui/icons-material/InfoOutlined"
 import SettingsIcon from "@mui/icons-material/SettingsOutlined"
 import ExitIcon from "@mui/icons-material/ExitToAppOutlined"
 import { invoke } from "@tauri-apps/api"
-import { open as openDialog } from "@tauri-apps/api/dialog"
+import { open as openFileDialog } from "@tauri-apps/api/dialog"
 import { useDispatch } from "react-redux"
-import { setSrc } from "../store/player-slice"
+import { setSrc } from "../store/player"
+import { show } from "../store/about-dialog"
 
 export default function AppMenu() {
     const [open, setOpen] = useState(false)
     const [isMac, setIsMac] = useState(false)
     const dispatch = useDispatch()
-    const handleClick = () => setOpen(o => !o)
-    const handleClose = () => setOpen(false)
     const btnRef = useRef(null)
     const shortCutPrefix = useMemo(
         () => isMac ? "⌘" : "Ctrl+",
         [isMac]
     )
+    const handleClick = () => setOpen(o => !o)
+    const handleClose = () => setOpen(false)
     const handleExit = () => {
         invoke("exit")
     }
     const handleOpenFile = async () => {
         handleClose()
 
-        const file = await openDialog({
+        const file = await openFileDialog({
             filters: [{
                 name: "mp4 files",
                 extensions: ["mp4"]
             }]
         })
-        
+
         if (!file) {
             return
         }
 
         dispatch(setSrc(file))
-        invoke("get_filename", {pathname: file}).then(n => {
+        invoke("get_filename", { pathname: file }).then(n => {
             invoke("set_title", { title: n })
         })
+    }
+    const handleAbout = () => {
+        handleClose()
+        dispatch(show())
     }
 
     useEffect(
@@ -103,7 +108,7 @@ export default function AppMenu() {
                         </Typography>
                     </MenuItem>
                     <Divider />
-                    <MenuItem>
+                    <MenuItem onClick={handleAbout}>
                         <ListItemIcon>
                             <InfoIcon fontSize="small" />
                         </ListItemIcon>
