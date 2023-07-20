@@ -22,7 +22,8 @@ import { invoke } from "@tauri-apps/api"
 import { open as openFileDialog } from "@tauri-apps/api/dialog"
 import { useDispatch } from "react-redux"
 import { setSrc } from "../store/player"
-import { show } from "../store/about-dialog"
+import { show as showAbout } from "../store/about-dialog"
+import {show as showSettings} from "../store/settings-dialog"
 
 export default function AppMenu() {
     const [open, setOpen] = useState(false)
@@ -59,7 +60,11 @@ export default function AppMenu() {
     }
     const handleAbout = () => {
         handleClose()
-        dispatch(show())
+        dispatch(showAbout())
+    }
+    const handleSettings = () => {
+        handleClose()
+        dispatch(showSettings())
     }
 
     useEffect(
@@ -98,7 +103,7 @@ export default function AppMenu() {
                         <ListItemText>打开文件夹</ListItemText>
                     </MenuItem>
                     <Divider />
-                    <MenuItem>
+                    <MenuItem onClick={handleSettings}>
                         <ListItemIcon>
                             <SettingsIcon fontSize="small" />
                         </ListItemIcon>
