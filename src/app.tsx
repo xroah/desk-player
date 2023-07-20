@@ -5,6 +5,7 @@ import { invoke } from "@tauri-apps/api"
 import Player from "./components/player"
 import AboutDialog from "./components/about-dialog"
 import Playlist from "./components/playlist"
+import SettingsDialog from "./components/settings-dialog"
 
 function App() {
     const handleKeyDown = useCallback(
@@ -55,6 +56,7 @@ function App() {
             </header>
             <Player />
             <AboutDialog />
+            <SettingsDialog/>
         </div>
     )
 }

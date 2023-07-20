@@ -1,20 +1,19 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::path::PathBuf;
+use std::{fs, path::Path};
 
-use home;
-use rplayer::{js_api, setup, tray};
+use rplayer::{js_api, setup, tray, utils};
 use tauri::WindowEvent;
 
 fn main() {
-    println!(
-        "Home dir ======> {:?}",
-        home::home_dir()
-            .unwrap_or_else(|| PathBuf::new())
-            .to_str()
-            .unwrap_or_else(|| "")
-    );
+    let app_dir = utils::get_app_dir();
+    let app_dir = Path::new(app_dir.as_str());
+
+    if !app_dir.exists() {
+        let _ = fs::create_dir(app_dir);
+    }
+
     tauri::Builder::default()
         .setup(setup::init)
         .system_tray(tray::build())
@@ -39,7 +38,9 @@ fn main() {
             js_api::fs::get_filename,
             js_api::fs::is_dir,
             js_api::fs::is_file,
-            js_api::fs::read_dir
+            js_api::fs::read_dir,
+            js_api::get_settings,
+            js_api::save_settings
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
