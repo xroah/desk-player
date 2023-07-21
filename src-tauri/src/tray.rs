@@ -1,5 +1,5 @@
 use std::{env, process};
-use tauri::{AppHandle, CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu, Wry};
+use tauri::{AppHandle, CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu, Wry, Manager};
 
 use crate::utils::show_main_window;
 
@@ -47,7 +47,9 @@ pub fn handle_system_tray_event(app: &AppHandle<Wry>, event: SystemTrayEvent) {
             if id == convert_type2string(show_menu) {
                 show_main_window(app);
             } else if id == convert_type2string(quit) {
-                process::exit(0);
+                if let Some(win) = app.get_window("main") {
+                    let _ = win.emit("exit", ());
+                }
             }
         }
         _ => (),

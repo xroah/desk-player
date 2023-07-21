@@ -45,11 +45,11 @@ export default function Player() {
 
     useEffect(
         () => {
-            const unlisten = listen(TauriEvent.WINDOW_FILE_DROP, handleFileDrop)
+            let unlisten = () => { }
+            listen(TauriEvent.WINDOW_FILE_DROP, handleFileDrop)
+                .then(f => unlisten = f)
 
-            return () => {
-                unlisten.then(f => f())
-            }
+            return () => unlisten()
         },
         []
     )

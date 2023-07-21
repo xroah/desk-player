@@ -2,6 +2,7 @@ import AppMenu from "./components/menu"
 import GlobalStyles from "./components/global-styles"
 import { useCallback, useEffect } from "react"
 import { invoke } from "@tauri-apps/api"
+import { appWindow } from "@tauri-apps/api/window"
 import Player from "./components/player"
 import AboutDialog from "./components/about-dialog"
 import Playlist from "./components/playlist"
@@ -29,9 +30,17 @@ function App() {
 
     useEffect(
         () => {
+            let unlisten = () => {}
+
+            appWindow.listen("exit", () => {
+                invoke("exit")
+            }).then(f => unlisten = f)
             document.addEventListener("keydown", handleKeyDown)
 
-            return document.removeEventListener("keydown", handleKeyDown)
+            return () => {
+                document.removeEventListener("keydown", handleKeyDown)
+                unlisten()
+            }
         },
         [handleKeyDown]
     )
@@ -56,7 +65,7 @@ function App() {
             </header>
             <Player />
             <AboutDialog />
-            <SettingsDialog/>
+            <SettingsDialog />
         </div>
     )
 }
