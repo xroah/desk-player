@@ -1,57 +1,19 @@
 import AppMenu from "./components/menu"
 import GlobalStyles from "./components/global-styles"
-import { useCallback, useEffect } from "react"
-import { invoke } from "@tauri-apps/api"
-import { appWindow } from "@tauri-apps/api/window"
 import Player from "./components/player"
 import AboutDialog from "./components/about-dialog"
 import Playlist from "./components/playlist"
 import SettingsDialog from "./components/settings-dialog"
+import Hotkey from "./components/hotkey"
 
-function App() {
-    const handleKeyDown = useCallback(
-        (ev: KeyboardEvent) => {
-            const key = ev.key.toLowerCase()
-
-            if (ev.metaKey) {
-                switch (key) {
-                    case "q":
-                        invoke("exit")
-                        break
-                    case "w":
-                        invoke("hide_window")
-                        break
-                }
-                return
-            }
-        },
-        []
-    )
-
-    useEffect(
-        () => {
-            let unlisten = () => {}
-
-            appWindow.listen("exit", () => {
-                invoke("exit")
-            }).then(f => unlisten = f)
-            document.addEventListener("keydown", handleKeyDown)
-
-            return () => {
-                document.removeEventListener("keydown", handleKeyDown)
-                unlisten()
-            }
-        },
-        [handleKeyDown]
-    )
-
-    return (
+function App() {return (
         <div css={{
             display: "flex",
             flexDirection: "column",
             height: "100vh",
             overflow: "hidden"
         }}>
+            <Hotkey/>
             <GlobalStyles />
             <header css={{
                 display: "flex",

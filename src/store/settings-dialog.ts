@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 interface Settings {
-    rememberPosition: boolean
+    rememberProgress: boolean
     pauseOnHidden: boolean
 }
 
@@ -15,7 +15,7 @@ export const settingsDialogSlice = createSlice({
     initialState: {
         open: false,
         settings: {
-            rememberPosition: true,
+            rememberProgress: true,
             pauseOnHidden: true
         }
     } as SettingsDialogState,
