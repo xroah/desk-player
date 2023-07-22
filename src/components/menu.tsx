@@ -1,5 +1,4 @@
 import {
-    useEffect,
     useMemo,
     useRef,
     useState
@@ -23,10 +22,11 @@ import { useDispatch } from "react-redux"
 import { show as showAbout } from "../store/about-dialog"
 import {show as showSettings} from "../store/settings-dialog"
 import useOpenFile from "../hooks/useOpenFile"
+import useIsMac from "../hooks/useIsMac"
 
 export default function AppMenu() {
     const [open, setOpen] = useState(false)
-    const [isMac, setIsMac] = useState(false)
+    const isMac = useIsMac()
     const dispatch = useDispatch()
     const openFile = useOpenFile()
     const btnRef = useRef(null)
@@ -51,13 +51,6 @@ export default function AppMenu() {
         handleClose()
         dispatch(showSettings())
     }
-
-    useEffect(
-        () => {
-            invoke("get_os").then(os => setIsMac(os === "macos"))
-        },
-        []
-    )
 
     return (
         <>

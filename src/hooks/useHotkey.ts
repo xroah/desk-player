@@ -4,15 +4,17 @@ import { appWindow } from "@tauri-apps/api/window"
 import useOpenFile from "./useOpenFile"
 import { show as showDialog } from "../store/settings-dialog"
 import { useDispatch } from "react-redux"
+import useIsMac from "./useIsMac"
 
 export default function useHotkey() {
     const openFile = useOpenFile()
     const dispatch = useDispatch()
+    const isMac = useIsMac()
     const handleKeyDown = useCallback(
         (ev: KeyboardEvent) => {
             const key = ev.key.toLowerCase()
 
-            if (ev.metaKey) {
+            if ((isMac && ev.metaKey) || (!isMac && ev.ctrlKey)) {
                 switch (key) {
                     case "q":
                         invoke("exit")
@@ -26,7 +28,6 @@ export default function useHotkey() {
                     case ",":
                         dispatch(showDialog())
                 }
-                return
             }
         },
         [dispatch, openFile]
