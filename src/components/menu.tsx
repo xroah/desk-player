@@ -19,16 +19,16 @@ import InfoIcon from "@mui/icons-material/InfoOutlined"
 import SettingsIcon from "@mui/icons-material/SettingsOutlined"
 import ExitIcon from "@mui/icons-material/ExitToAppOutlined"
 import { invoke } from "@tauri-apps/api"
-import { open as openFileDialog } from "@tauri-apps/api/dialog"
 import { useDispatch } from "react-redux"
-import { setSrc } from "../store/player"
 import { show as showAbout } from "../store/about-dialog"
 import {show as showSettings} from "../store/settings-dialog"
+import useOpenFile from "../hooks/useOpenFile"
 
 export default function AppMenu() {
     const [open, setOpen] = useState(false)
     const [isMac, setIsMac] = useState(false)
     const dispatch = useDispatch()
+    const openFile = useOpenFile()
     const btnRef = useRef(null)
     const shortCutPrefix = useMemo(
         () => isMac ? "⌘" : "Ctrl+",
@@ -41,22 +41,7 @@ export default function AppMenu() {
     }
     const handleOpenFile = async () => {
         handleClose()
-
-        const file = await openFileDialog({
-            filters: [{
-                name: "mp4 files",
-                extensions: ["mp4"]
-            }]
-        })
-
-        if (!file) {
-            return
-        }
-
-        dispatch(setSrc(file))
-        invoke("get_filename", { pathname: file }).then(n => {
-            invoke("set_title", { title: n })
-        })
+        openFile()
     }
     const handleAbout = () => {
         handleClose()

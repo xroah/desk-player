@@ -4,16 +4,18 @@ import Player from "./components/player"
 import AboutDialog from "./components/about-dialog"
 import Playlist from "./components/playlist"
 import SettingsDialog from "./components/settings-dialog"
-import Hotkey from "./components/hotkey"
+import useHotkey from "./hooks/useHotkey"
 
-function App() {return (
+function App() {
+    useHotkey()
+
+    return (
         <div css={{
             display: "flex",
             flexDirection: "column",
             height: "100vh",
             overflow: "hidden"
         }}>
-            <Hotkey/>
             <GlobalStyles />
             <header css={{
                 display: "flex",

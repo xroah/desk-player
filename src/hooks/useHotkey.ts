@@ -1,8 +1,13 @@
+import { useCallback, useEffect } from "react"
 import { invoke } from "@tauri-apps/api"
 import { appWindow } from "@tauri-apps/api/window"
-import { useCallback, useEffect } from "react"
+import useOpenFile from "./useOpenFile"
+import { show as showDialog } from "../store/settings-dialog"
+import { useDispatch } from "react-redux"
 
-export default function Hotkey() {
+export default function useHotkey() {
+    const openFile = useOpenFile()
+    const dispatch = useDispatch()
     const handleKeyDown = useCallback(
         (ev: KeyboardEvent) => {
             const key = ev.key.toLowerCase()
@@ -15,16 +20,21 @@ export default function Hotkey() {
                     case "w":
                         invoke("hide_window")
                         break
+                    case "o":
+                        openFile()
+                        break
+                    case ",":
+                        dispatch(showDialog())
                 }
                 return
             }
         },
-        []
+        [dispatch, openFile]
     )
 
     useEffect(
         () => {
-            let unlisten = () => {}
+            let unlisten = () => { }
 
             appWindow.listen("exit", () => {
                 invoke("exit")
@@ -38,6 +48,4 @@ export default function Hotkey() {
         },
         [handleKeyDown]
     )
-
-    return null
 }
