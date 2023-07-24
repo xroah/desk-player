@@ -18,6 +18,7 @@ export default function Player() {
     const vRef = useRef<HTMLVideoElement | null>(null)
     const [currentTime, setCurrentTime] = useState(0)
     const [duration, setDuration] = useState(0)
+    const [controlsVisible, setControlsVisible] = useState(true)
     const src = useSelector((state: RootState) => state.player.src)
     const controlRef = useRef<ControlRef>(null)
     const dispatch = useDispatch()
@@ -114,6 +115,7 @@ export default function Player() {
                 onDurationChange={handleDurationChange} />
             <Controls
                 ref={controlRef}
+                visible={controlsVisible}
                 currentTime={currentTime}
                 duration={duration}
                 onSliderChange={handleSliderChange} />
