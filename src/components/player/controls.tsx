@@ -6,18 +6,23 @@ import {
     useState
 } from "react"
 import Slider from "@mui/material/Slider"
+import { formatTime } from "../../utils"
 
 export interface ControlRef {
     setProgress: (p: number) => void
 }
 
 interface ControlsProps {
+    currentTime: number
+    duration: number
     onSliderChange?: (v: number) => void
 }
 
 export default forwardRef(
     (
         {
+            currentTime,
+            duration,
             onSliderChange,
             ...props
         }: ControlsProps,
@@ -51,7 +56,7 @@ export default forwardRef(
             },
             []
         )
-        
+
         return (
             <div
                 css={{
@@ -71,22 +76,28 @@ export default forwardRef(
                 {...props}>
                 <div
                     css={{
-                        position: "relative",
-                        height: "100%"
+                        display: "flex",
+                        alignItems: "center",
+                        color: "#fff",
+                        "& > div": {
+                            flexShrink: 0,
+                            lineHeight: 1
+                        }
                     }}>
+                    <div className="time">{formatTime(currentTime)}</div>
                     <div
                         css={{
-                            position: "absolute",
-                            top: 0,
-                            left: 0,
-                            width: "100%"
+                            flexGrow: 1,
+                            margin: "0 15px"
                         }}
                         onMouseDown={handleMouseDown}>
                         <Slider
+                            style={{ verticalAlign: "middle" }}
                             value={progress}
                             onChange={handleSliderChange}
                             onChangeCommitted={handleSliderChangeCommitted} />
                     </div>
+                    <div className="time">{formatTime(duration)}</div>
                 </div>
             </div>
         )

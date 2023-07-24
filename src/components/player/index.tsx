@@ -3,7 +3,8 @@ import {
     SyntheticEvent,
     useCallback,
     useEffect,
-    useRef
+    useRef,
+    useState
 } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { convertFileSrc } from "@tauri-apps/api/tauri"
@@ -15,6 +16,8 @@ import Controls, { ControlRef } from "./controls"
 
 export default function Player() {
     const vRef = useRef<HTMLVideoElement | null>(null)
+    const [currentTime, setCurrentTime] = useState(0)
+    const [duration, setDuration] = useState(0)
     const src = useSelector((state: RootState) => state.player.src)
     const controlRef = useRef<ControlRef>(null)
     const dispatch = useDispatch()
@@ -23,11 +26,15 @@ export default function Player() {
         const progress = t.currentTime / t.duration * 100
 
         controlRef.current?.setProgress(progress)
+        setCurrentTime(t.currentTime)
     }
     const handleSliderChange = (value: number) => {
         const { current: v } = vRef
 
         v!.currentTime = value / 100 * v!.duration
+    }
+    const handleDurationChange = () => {
+        setDuration(vRef.current!.duration)
     }
     const handleFileDrop = useCallback(
         async (e: Event<string[]>) => {
@@ -103,9 +110,12 @@ export default function Player() {
                 src={convertFileSrc(src)}
                 onClick={handleClick}
                 onContextMenu={handleContextMenu}
-                onTimeUpdate={handleTimeUpdate} />
+                onTimeUpdate={handleTimeUpdate}
+                onDurationChange={handleDurationChange} />
             <Controls
                 ref={controlRef}
+                currentTime={currentTime}
+                duration={duration}
                 onSliderChange={handleSliderChange} />
         </div>
     )
