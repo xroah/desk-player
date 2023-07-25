@@ -11,8 +11,9 @@ import { convertFileSrc } from "@tauri-apps/api/tauri"
 import { TauriEvent, listen, Event } from "@tauri-apps/api/event"
 import { RootState } from "../../store"
 import { invoke } from "@tauri-apps/api"
-import { setSrc } from "../../store/player"
+import { setPaused, setSrc } from "../../store/player"
 import Controls, { ControlRef } from "./controls"
+import Paused from "./paused"
 
 export default function Player() {
     const vRef = useRef<HTMLVideoElement | null>(null)
@@ -21,6 +22,8 @@ export default function Player() {
     const src = useSelector((state: RootState) => state.player.src)
     const controlRef = useRef<ControlRef>(null)
     const dispatch = useDispatch()
+    const handlePlay = () => dispatch(setPaused(false))
+    const handlePause = () => dispatch(setPaused(true))
     const handleTimeUpdate = (ev: SyntheticEvent<HTMLVideoElement>) => {
         const t = ev.target as HTMLVideoElement
         const progress = t.currentTime / t.duration * 100
@@ -116,7 +119,10 @@ export default function Player() {
                 onClick={handleClick}
                 onContextMenu={handleContextMenu}
                 onTimeUpdate={handleTimeUpdate}
+                onPlay={handlePlay}
+                onPause={handlePause}
                 onDurationChange={handleDurationChange} />
+            <Paused/>
             <Controls
                 ref={controlRef}
                 currentTime={currentTime}

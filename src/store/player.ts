@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit"
 
 export interface PlayerState {
     src: string
+    paused: boolean
 }
 
 export const initialState: PlayerState = {
-    src: ""
+    src: "",
+    paused: true
 }
 
 export const playerSlice = createSlice({
@@ -18,10 +20,13 @@ export const playerSlice = createSlice({
             }
 
             state.src = action.payload
+        },
+        setPaused(state, action) {
+            state.paused = action.payload
         }
     }
 })
 
-export const { setSrc } = playerSlice.actions
+export const { setSrc, setPaused } = playerSlice.actions
 
 export default playerSlice.reducer
