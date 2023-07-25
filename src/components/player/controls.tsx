@@ -1,6 +1,9 @@
 import {
     ForwardedRef,
+    MouseEvent,
     forwardRef,
+    useCallback,
+    useEffect,
     useImperativeHandle,
     useRef,
     useState
@@ -12,10 +15,11 @@ import Fade from "@mui/material/Fade"
 
 export interface ControlRef {
     setProgress: (p: number) => void
+    show: VoidFunction
+    hide: VoidFunction
 }
 
 interface ControlsProps {
-    visible: boolean
     currentTime: number
     duration: number
     onSliderChange?: (v: number) => void
@@ -25,25 +29,85 @@ export default forwardRef(
     (
         {
             currentTime,
-            visible,
             duration,
             onSliderChange,
             ...props
         }: ControlsProps,
         ref: ForwardedRef<unknown>
     ) => {
+        const [visible, setVisible] = useState(false)
         const [progress, setProgress] = useState(0)
         const isMouseDown = useRef(false)
+        const mouseEntered = useRef(false)
+        const timeIdRef = useRef(-1)
+
+        const hide = useCallback(
+            () => {
+                if (!isMouseDown.current && !mouseEntered.current) {
+                    setVisible(false)
+                }
+            },
+            []
+        )
+        const delayHide = useCallback(
+            () => {
+                clearTimeout()
+
+                timeIdRef.current = window.setTimeout(
+                    () => {
+                        timeIdRef.current = -1
+
+                        hide()
+                    },
+                    3000
+                )
+            },
+            []
+        )
+        const show = useCallback(
+            () => {
+                clearTimeout()
+                setVisible(true)
+
+                delayHide()
+            },
+            []
+        )
         const handleSliderChange = (_: unknown, v: number | number[]) => {
             setProgress(v as number)
             onSliderChange?.(v as number)
         }
         const handleSliderChangeCommitted = () => {
             isMouseDown.current = false
+
+            delayHide()
         }
         const handleMouseDown = () => {
             isMouseDown.current = true
         }
+        const handleMouseEnterOrLeave = (ev: MouseEvent) => {
+            if (ev.type === "mouseenter") {
+                mouseEntered.current = true
+            } else {
+                mouseEntered.current = false
+
+                delayHide()
+            }
+        }
+        const clearTimeout = () => {
+            if (timeIdRef.current !== -1) {
+                window.clearTimeout(timeIdRef.current)
+
+                timeIdRef.current = -1
+            }
+        }
+
+        useEffect(
+            () => {
+                show()
+            },
+            []
+        )
 
         useImperativeHandle(
             ref,
@@ -55,7 +119,9 @@ export default forwardRef(
                         }
 
                         setProgress(p)
-                    }
+                    },
+                    show,
+                    hide
                 }
             },
             []
@@ -81,6 +147,8 @@ export default forwardRef(
                             opacity: 1
                         }
                     }}
+                    onMouseEnter={handleMouseEnterOrLeave}
+                    onMouseLeave={handleMouseEnterOrLeave}
                     {...props}>
                     <Stack
                         spacing={2}
