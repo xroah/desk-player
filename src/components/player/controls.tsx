@@ -12,7 +12,8 @@ import Slider from "@mui/material/Slider"
 import Stack from "@mui/material/Stack"
 import { formatTime } from "../../utils"
 import Fade from "@mui/material/Fade"
-import { Toggle, ToggleProps } from "./toggle"
+import Toggle, { ToggleProps } from "./toggle"
+import Fullscreen, { FullscreenProps } from "./fullscreen"
 
 export interface ControlRef {
     setProgress: (p: number) => void
@@ -20,7 +21,7 @@ export interface ControlRef {
     hide: VoidFunction
 }
 
-interface ControlsProps extends ToggleProps {
+interface ControlsProps extends ToggleProps, FullscreenProps {
     currentTime: number
     duration: number
     onSliderChange?: (v: number) => void
@@ -31,6 +32,7 @@ export default forwardRef(
         {
             currentTime,
             duration,
+            fullscreenEl,
             onSliderChange,
             onToggle,
             ...props
@@ -176,7 +178,6 @@ export default forwardRef(
                     <div css={{
                         display: "flex",
                         button: {
-                            margin: "0 10px",
                             color: "#fff"
                         },
                         svg: {
@@ -186,6 +187,11 @@ export default forwardRef(
                     }}>
                         <div>
                             <Toggle onToggle={onToggle}/>
+                        </div>
+                        <div css={{
+                            marginLeft: "auto"
+                        }}>
+                            <Fullscreen fullscreenEl={fullscreenEl} />
                         </div>
                     </div>
                 </div>

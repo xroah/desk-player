@@ -8,7 +8,7 @@ export interface ToggleProps {
     onToggle?: VoidFunction
 }
 
-export function Toggle(
+export default function Toggle(
     { onToggle }: ToggleProps
 ) {
     const paused = useSelector(

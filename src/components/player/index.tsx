@@ -21,6 +21,7 @@ export default function Player() {
     const [duration, setDuration] = useState(0)
     const src = useSelector((state: RootState) => state.player.src)
     const controlRef = useRef<ControlRef>(null)
+    const elRef = useRef<HTMLDivElement>(null)
     const dispatch = useDispatch()
     const handlePlay = () => dispatch(setPaused(false))
     const handlePause = () => dispatch(setPaused(true))
@@ -108,6 +109,7 @@ export default function Player() {
                 flexGrow: 1,
                 backgroundColor: "#000"
             }}
+            ref={elRef}
             onMouseMove={handleMouseMove}>
             <video
                 css={{
@@ -125,6 +127,7 @@ export default function Player() {
             <Paused />
             <Controls
                 ref={controlRef}
+                fullscreenEl={elRef}
                 currentTime={currentTime}
                 duration={duration}
                 onToggle={toggle}

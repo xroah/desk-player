@@ -34,6 +34,10 @@
             "shell": {
                 "all": false,
                 "open": true
+            },
+            "window": {
+                "all": false,
+                "setFullscreen": true
             }
         },
         "bundle": {
