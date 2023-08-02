@@ -12,6 +12,7 @@ import Slider from "@mui/material/Slider"
 import Stack from "@mui/material/Stack"
 import { formatTime } from "../../utils"
 import Fade from "@mui/material/Fade"
+import { Toggle, ToggleProps } from "./toggle"
 
 export interface ControlRef {
     setProgress: (p: number) => void
@@ -19,7 +20,7 @@ export interface ControlRef {
     hide: VoidFunction
 }
 
-interface ControlsProps {
+interface ControlsProps extends ToggleProps {
     currentTime: number
     duration: number
     onSliderChange?: (v: number) => void
@@ -31,6 +32,7 @@ export default forwardRef(
             currentTime,
             duration,
             onSliderChange,
+            onToggle,
             ...props
         }: ControlsProps,
         ref: ForwardedRef<unknown>
@@ -154,7 +156,7 @@ export default forwardRef(
                         spacing={2}
                         direction="row"
                         alignItems="center"
-                        style={{ color: "#fff" }}>
+                        style={{ color: "#fff", height: 20 }}>
                         <div className="time">{formatTime(currentTime)}</div>
                         <div
                             css={{
@@ -171,6 +173,21 @@ export default forwardRef(
                         </div>
                         <div className="time">{formatTime(duration)}</div>
                     </Stack>
+                    <div css={{
+                        display: "flex",
+                        button: {
+                            margin: "0 10px",
+                            color: "#fff"
+                        },
+                        svg: {
+                            width: 36,
+                            height: 36
+                        }
+                    }}>
+                        <div>
+                            <Toggle onToggle={onToggle}/>
+                        </div>
+                    </div>
                 </div>
             </Fade>
         )

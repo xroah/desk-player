@@ -61,7 +61,7 @@ export default function Player() {
         },
         []
     )
-    const handleClick = () => {
+    const toggle = () => {
         const video = vRef.current!
 
         if (video.paused) {
@@ -116,17 +116,18 @@ export default function Player() {
                 }}
                 ref={vRef}
                 src={convertFileSrc(src)}
-                onClick={handleClick}
+                onClick={toggle}
                 onContextMenu={handleContextMenu}
                 onTimeUpdate={handleTimeUpdate}
                 onPlay={handlePlay}
                 onPause={handlePause}
                 onDurationChange={handleDurationChange} />
-            <Paused/>
+            <Paused />
             <Controls
                 ref={controlRef}
                 currentTime={currentTime}
                 duration={duration}
+                onToggle={toggle}
                 onSliderChange={handleSliderChange} />
         </div>
     )
